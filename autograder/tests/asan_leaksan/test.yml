@@ -1,7 +1,0 @@
-weight: 0.0
-name: 'Memoria con ASan y LSan'
-message: 'Ejecuta un smoke test instrumentado para detectar errores de memoria y fugas'
-show_output: true
-required_files:
-  - include/utec/algebra/shape.h
-  - include/utec/algebra/tensor_backend.h

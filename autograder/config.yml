@@ -1,4 +1,0 @@
-limit_submissions: -1
-required_files: 
-  - include/utec/algebra/shape.h
-  - include/utec/algebra/tensor_backend.h

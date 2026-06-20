@@ -1,7 +1,0 @@
-weight: 0.0
-name: 'Analisis estatico con clang-tidy'
-message: 'Revisa diagnosticos del compilador y del analizador estatico Clang'
-show_output: true
-required_files:
-  - include/utec/algebra/shape.h
-  - include/utec/algebra/tensor_backend.h
