@@ -13,6 +13,7 @@
 #include "tensor_backend.h"
 #include "nn_interfaces.h"
 #include "nn_loss.h"
+#include "nn_pooling.h"
 
 namespace utec::tf {
     namespace optimizers {
@@ -69,25 +70,44 @@ namespace utec::tf {
     }
 
     std::unordered_map<std::string, Tensor<float>> Sequential::parameters() const {
-        std::unordered_map<std::string, Tensor<float>> params;
-        int layer_idx = 0;
+        std::unordered_map<std::string, Tensor<float>> all_params;
+        int conv2d_idx = 0;
+        int dense_idx = 0;
+        int maxpool_idx = 0;
+        int flatten_idx = 0;
+        int input_idx = 0;
+    
         for (const auto& layer : layers_) {
             auto layer_params = layer->parameters();
-            for (auto& [name, tensor] : layer_params) {
-                std::string message = "layer_" + std::to_string(layer_idx) + "/" + name;
-                params.emplace(message, tensor);
+            std::string layer_type = "layer";
+            int current_idx = 0;
+            if (dynamic_cast<layers::Conv2D*>(layer.get())) {
+                layer_type = "conv2d";
+                current_idx = conv2d_idx++;
+            } else if (dynamic_cast<layers::Dense*>(layer.get())) {
+                layer_type = "dense";
+                current_idx = dense_idx++;
+            } else if (dynamic_cast<layers::MaxPooling2D*>(layer.get())) {
+                layer_type = "maxpooling2d";
+                current_idx = maxpool_idx++;
+            } else if (dynamic_cast<layers::Flatten*>(layer.get())) {
+                layer_type = "flatten";
+                current_idx = flatten_idx++;
+            } else if (dynamic_cast<layers::Input*>(layer.get())) {
+                layer_type = "input";
+                current_idx = input_idx++;
             }
-            ++layer_idx;
+            for (const auto& [name, tensor] : layer_params) {
+                std::string full_name = layer_type + "_" + std::to_string(current_idx) + "/" + name;
+                all_params[full_name] = tensor;
+            }
         }
-        return params;
+        return all_params;
     }
     
     bool Sequential::compiled() const {
         return compiled_;
     }
 }
-
-
-
 
 #endif //PROG3_PF_EPIC1_FEATURE1_V2026_1_NN_OPTIMIZER_H

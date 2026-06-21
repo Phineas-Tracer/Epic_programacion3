@@ -51,7 +51,8 @@ namespace utec::tf {
                 in_features = input_shape[input_shape.rank() - 1];
                 output_shape_ = Shape{input_shape_[0], units_};
             }
-            weights_ = Tensor<float>::random_uniform(Shape{in_features, units_}, -0.05f, 0.05f);
+            float init_val = 1.0f / static_cast<float>(in_features);
+            weights_ = Tensor<float>(Shape{in_features, units_}, init_val);
             bias_ = Tensor<float>::zeros(Shape{units_});
             built_ = true;
         }

@@ -49,8 +49,10 @@ namespace utec::tf {
             const int in_w  = has_batch ? input_shape[2] : input_shape[1];
             const int in_c  = has_batch ? input_shape[3] : input_shape[2];
             const int k_h = kernel_size_[0];
-            const int k_w = kernel_size_[1];
-            weights_ = Tensor<float>::random_uniform(Shape{k_h, k_w, in_c, filters_}, -0.05f, 0.05f);
+            const int k_w = kernel_size_[1]; 
+            int in_features = k_h * k_w * in_c;
+            float init_val = 1.0f / static_cast<float>(in_features);
+            weights_ = Tensor<float>(Shape{k_h, k_w, in_c, filters_}, init_val);
             bias_ = Tensor<float>::zeros(Shape{filters_});
             const int out_h = (in_h - k_h) / strides_.rows + 1;
             const int out_w = (in_w - k_w) / strides_.cols + 1;

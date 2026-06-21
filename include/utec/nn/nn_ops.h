@@ -180,12 +180,4 @@ namespace utec::tf {
     }
 }
 
-
-
-
-
-
-
-
-
 #endif //PROG3_PF_EPIC1_FEATURE1_V2026_1_NN_OPS_H
